@@ -121,6 +121,18 @@ export function loadAsyncConnect({
     const asyncItems = component.reduxAsyncConnect;
     asyncItemsArr.push(...asyncItems);
 
+    if(routeParams.route.components){
+        var components = filterAndFlattenComponents(Array.isArray(routeParams.route.components) ? routeParams.route.components : [routeParams.route.components]);
+        if(components && components.length > 0){
+          components.forEach(component => {
+            const asyncComponentsItems = component.reduxAsyncConnect;
+            if(asyncComponentsItems){
+              asyncItemsArr.push(...asyncComponentsItems);
+              asyncItems.push(...asyncComponentsItems);
+            }
+          })
+        }
+    }
     // get array of results
     results.push(...asyncItems.reduce((itemsResults, item) => {
       if (filter(item, component)) {
